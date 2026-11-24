@@ -1,0 +1,162 @@
+/* WHERE DID I KEEP IT? — Stylesheet & Accessibility Modes */
+:root {
+  --bg-page: #F5F7FA;
+  --bg-card: #FFFFFF;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --accent: #1D4ED8;
+  --accent-soft: #EFF6FF;
+  --border-soft: #E2E8F0;
+}
+html {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans Tamil', sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  font-size: 16px;
+  -webkit-tap-highlight-color: transparent;
+}
+/* Root font scaling on <html> so ALL Tailwind rem sizes actually scale! */
+html.text-normal { font-size: 16px; }
+html.text-large { font-size: 18px; }
+html.text-xlarge { font-size: 20.5px; }
+html.text-huge { font-size: 23px; }
+
+/* Complete Color Blindness (Achromatopsia / Monochromacy) & Color-Vision Filters */
+html.cvd-complete body {
+  filter: grayscale(100%) contrast(1.16) !important;
+}
+html.cvd-deuteranopia body {
+  filter: url(#cvd-deuteranopia-filter) !important;
+}
+html.cvd-protanopia body {
+  filter: url(#cvd-protanopia-filter) !important;
+}
+html.cvd-tritanopia body {
+  filter: url(#cvd-tritanopia-filter) !important;
+}
+html.cvd-complete .card-surface,
+html.cvd-deuteranopia .card-surface,
+html.cvd-protanopia .card-surface,
+html.cvd-tritanopia .card-surface {
+  border: 2px solid #0F172A !important;
+}
+html.cvd-complete .map-room,
+html.cvd-deuteranopia .map-room,
+html.cvd-protanopia .map-room,
+html.cvd-tritanopia .map-room {
+  border: 3px dashed #0F172A !important;
+}
+
+/* High Contrast WCAG AAA Mode (overrides Tailwind surfaces cleanly) */
+html.high-contrast,
+html.high-contrast body {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+}
+html.high-contrast header,
+html.high-contrast nav,
+html.high-contrast .card-surface,
+html.high-contrast #modalBox {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+  border: 3px solid #000000 !important;
+  box-shadow: none !important;
+}
+html.high-contrast p,
+html.high-contrast span,
+html.high-contrast label,
+html.high-contrast div,
+html.high-contrast h1,
+html.high-contrast h2,
+html.high-contrast h3 {
+  color: inherit;
+}
+html.high-contrast .text-slate-500,
+html.high-contrast .text-slate-600,
+html.high-contrast .text-slate-700 {
+  color: #000000 !important;
+}
+html.high-contrast button.btn-primary,
+html.high-contrast .bg-blue-700,
+html.high-contrast .bg-emerald-700,
+html.high-contrast .bg-indigo-700,
+html.high-contrast .bg-slate-900 {
+  background-color: #000000 !important;
+  color: #FFFF00 !important;
+  border: 3px solid #000000 !important;
+}
+html.high-contrast input,
+html.high-contrast select,
+html.high-contrast textarea {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+  border: 3px solid #000000 !important;
+}
+
+/* Motor & Fine-Motor / Coordination Mode (64px+ targets, extra spacing) */
+html.motor-mode button,
+html.motor-mode input[type="text"],
+html.motor-mode input[type="email"],
+html.motor-mode input[type="password"],
+html.motor-mode select,
+html.motor-mode label.touch-target {
+  min-height: 64px !important;
+  padding-left: 18px !important;
+  padding-right: 18px !important;
+  border-width: 2px !important;
+}
+html.motor-mode input[type="checkbox"] {
+  width: 30px !important;
+  height: 30px !important;
+}
+html.motor-mode .grid { gap: 1.25rem !important; }
+
+/* Reduced Motion Mode */
+html.reduced-motion *, html.reduced-motion *::before, html.reduced-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+.card-surface {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+}
+.touch-target { min-height: 48px; }
+.map-room {
+  transition: box-shadow 0.2s ease, transform 0.1s ease;
+  user-select: none;
+  touch-action: none;
+}
+.map-room:hover { box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12); }
+@keyframes pulseRing {
+  0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.95; }
+  70% { transform: translate(-50%, -50%) scale(1.75); opacity: 0; }
+  100% { transform: translate(-50%, -50%) scale(1.75); opacity: 0; }
+}
+.pin-pulse::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  border: 4px solid #1D4ED8;
+  animation: pulseRing 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  pointer-events: none;
+}
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 4px solid #F59E0B !important;
+  outline-offset: 2px !important;
+}
+.dwell-ring {
+  position: fixed; pointer-events: none; z-index: 9999;
+  width: 54px; height: 54px;
+  transform: translate(-50%, -50%);
+  display: none;
+}
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
